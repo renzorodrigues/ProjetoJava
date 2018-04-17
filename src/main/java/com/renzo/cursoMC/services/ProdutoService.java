@@ -9,16 +9,15 @@ import com.renzo.cursoMC.domain.Categoria;
 import com.renzo.cursoMC.repositories.CategoriaRepository;
 
 @Service
-public class CategoriaService {
+public class ProdutoService {
 	
 	@Autowired
 	private CategoriaRepository repo;
 	
-	public Categoria find(Integer id) {
+	public Categoria buscar(Integer id) {
 		
 		Optional<Categoria> obj = repo.findById(id);		
-		return obj.orElseThrow(() -> new com.renzo.cursoMC.services.exceptions.ObjectNotFoundException(
-				"Objeto não encontrado! ID: " + id + " | Tipo: " + Categoria.class.getName()));
-				
+		return obj.orElse(null);
+		
 	}
 }
