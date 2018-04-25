@@ -13,6 +13,7 @@ import com.renzo.cursoMC.domain.Cidade;
 import com.renzo.cursoMC.domain.Cliente;
 import com.renzo.cursoMC.domain.Endereco;
 import com.renzo.cursoMC.domain.Estado;
+import com.renzo.cursoMC.domain.ItemPedido;
 import com.renzo.cursoMC.domain.Pagamento;
 import com.renzo.cursoMC.domain.PagamentoComBoleto;
 import com.renzo.cursoMC.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.renzo.cursoMC.repositories.CidadeRepository;
 import com.renzo.cursoMC.repositories.ClienteRepository;
 import com.renzo.cursoMC.repositories.EnderecoRepository;
 import com.renzo.cursoMC.repositories.EstadoRepository;
+import com.renzo.cursoMC.repositories.ItemPedidoRepository;
 import com.renzo.cursoMC.repositories.PagamentoRepository;
 import com.renzo.cursoMC.repositories.PedidoRepository;
 import com.renzo.cursoMC.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class CursoMcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoMcApplication.class, args);
@@ -129,5 +133,18 @@ public class CursoMcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
 		
+	/* ------ INSTÂNCIAS DE ITEMPEDIDOS */
+		ItemPedido itp1 = new ItemPedido(ped1,prod1,0.00,1,2000.00);
+		ItemPedido itp2 = new ItemPedido(ped1,prod3,0.00,2,80.00);
+		ItemPedido itp3 = new ItemPedido(ped2,prod2,100.00,1,800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(itp1,itp2));
+		ped2.getItens().addAll(Arrays.asList(itp3));
+		
+		prod1.getItens().addAll(Arrays.asList(itp1));
+		prod2.getItens().addAll(Arrays.asList(itp3));
+		prod3.getItens().addAll(Arrays.asList(itp2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(itp1,itp2,itp3));
 	}
 }
