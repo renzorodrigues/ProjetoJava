@@ -1,5 +1,6 @@
 package com.renzo.cursoMC;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.renzo.cursoMC.domain.Cidade;
 import com.renzo.cursoMC.domain.Cliente;
 import com.renzo.cursoMC.domain.Endereco;
 import com.renzo.cursoMC.domain.Estado;
+import com.renzo.cursoMC.domain.Pagamento;
+import com.renzo.cursoMC.domain.PagamentoComBoleto;
+import com.renzo.cursoMC.domain.PagamentoComCartao;
+import com.renzo.cursoMC.domain.Pedido;
 import com.renzo.cursoMC.domain.Produto;
+import com.renzo.cursoMC.domain.enums.EstadoPagamento;
 import com.renzo.cursoMC.domain.enums.TipoCliente;
 import com.renzo.cursoMC.repositories.CategoriaRepository;
 import com.renzo.cursoMC.repositories.CidadeRepository;
 import com.renzo.cursoMC.repositories.ClienteRepository;
 import com.renzo.cursoMC.repositories.EnderecoRepository;
 import com.renzo.cursoMC.repositories.EstadoRepository;
+import com.renzo.cursoMC.repositories.PagamentoRepository;
+import com.renzo.cursoMC.repositories.PedidoRepository;
 import com.renzo.cursoMC.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class CursoMcApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoMcApplication.class, args);
@@ -99,5 +111,23 @@ public class CursoMcApplication implements CommandLineRunner {
 		//adicionando a lista de instâncias em seu respectivo Repository
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(end1,end2));
+		
+	/* ------ INSTÂNCIAS DE PEDIDOS */
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cli1,end1);
+		Pedido ped2 = new Pedido(null,sdf.parse("10/10/2017 19:35"),cli1,end2);
+		
+	/* ------ INSTÂNCIAS DE PEDIDOS */
+		Pagamento pag1 = new PagamentoComCartao(null,EstadoPagamento.QUITADO,ped1,6);
+		ped1.setPagamento(pag1);
+		Pagamento pag2 = new PagamentoComBoleto(null,EstadoPagamento.PENDENTE,ped2,sdf.parse("20/10/2017 00:00"),null);
+		ped2.setPagamento(pag2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		//adicionando a lista de instâncias em seu respectivo Repository
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
+		
 	}
 }
