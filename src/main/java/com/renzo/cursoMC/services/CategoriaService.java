@@ -3,10 +3,12 @@ package com.renzo.cursoMC.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.renzo.cursoMC.domain.Categoria;
 import com.renzo.cursoMC.repositories.CategoriaRepository;
+import com.renzo.cursoMC.services.exceptions.DataIntegrityException;
 
 @Service
 public class CategoriaService {
@@ -29,5 +31,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma Categoria que possui Produtos");
+		}
 	}
 }
