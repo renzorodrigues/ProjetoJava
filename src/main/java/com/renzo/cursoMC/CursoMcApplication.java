@@ -64,6 +64,11 @@ public class CursoMcApplication implements CommandLineRunner {
 		
 		Categoria cat1 = new Categoria(null,"Informática");
 		Categoria cat2 = new Categoria(null,"Escritório");
+		Categoria cat3 = new Categoria(null,"Cama, Mesa e Banho");
+		Categoria cat4 = new Categoria(null,"Eletrônicos");
+		Categoria cat5 = new Categoria(null,"Jardinagem");
+		Categoria cat6 = new Categoria(null,"Decoração");
+		Categoria cat7 = new Categoria(null,"Perfumaria");
 		
 	/* ------ INSTÂNCIAS DE PRODUTOS */
 		
@@ -81,7 +86,7 @@ public class CursoMcApplication implements CommandLineRunner {
 		prod3.getCategorias().addAll(Arrays.asList(cat1));
 		
 		//adicionando a lista de instâncias em seu respectivo Repository
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
 		produtoRepository.saveAll(Arrays.asList(prod1,prod2,prod3));
 		
 	/* ------ INSTÂNCIAS DE ESTADOS */
